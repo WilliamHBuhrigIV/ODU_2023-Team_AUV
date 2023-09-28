@@ -1,0 +1,10 @@
+In our design we are implementing ASME Standard Y14.5 for geometry dimensions and tolerances, 
+the Parker Manual for O ring usage and implementation, and the ASME Boiler and Pressure Vessel 
+Code Section X: Fiber-Reinforced Plastic Pressure Vessels. ASME Y14.5 is used as our designs 
+will need interpretation by other engineers and ensuring succeeding teams understand the nature 
+of the designs is crucial to the projects success. The Parker Manual is being utilized as O rings 
+are the main waterproofing system used on the AUV and ensuring proper use of O rings will increase 
+the waterproofness of the AUV. Finally, the ASME BPVC Section X is used as the AUV is a reverse 
+pressure vessel. Although material strengths for resin additive manufacturing components are lower 
+than glass and carbon fiber reinforced plastics, the guidance the code provides can improve the 
+hull strength of any additions to the AUV.
