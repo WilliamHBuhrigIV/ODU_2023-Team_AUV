@@ -1,5 +1,6 @@
 import time
 import math
+import socket
 import RPi.GPIO as GPIO
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ipv4 = input('What what is the IPv4 Address of the Local Host: ')
