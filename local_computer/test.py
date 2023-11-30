@@ -1,0 +1,36 @@
+import time
+import math
+import socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+ipv4 = input('What what is the IPv4 Address of the Local Host: ')
+s.connect((ipv4,1234))
+def thrustclamp(thrustvalue): #Clamps values between -1 and 1
+    if thrustvalue>1:
+        return 1
+    elif thrustvalue<-1:
+        return -1
+    return thrustvalue
+parameterA = 0.444970796979893
+parameterB = 1.15066476381101
+parameterC = -140
+parameterD = -243
+idealzeroThrustHz = 666 #hz Ideal Value
+def pwmShift(expectedPWMValue): #Provides Adjusted Value from Theoretical
+    return parameterA*math.pow(expectedPWMValue,parameterB)
+zeroThrustHz=pwmShift(idealzeroThrustHz)
+def dutyToPWM(thrustvalue): 
+    thrustvalue=thrustclamp(thrustvalue)
+    if thrustvalue>0:
+        return pwmShift(parameterC*thrustvalue+idealzeroThrustHz)
+    elif thrustvalue<-0:
+        return pwmShift(parameterD*thrustvalue+idealzeroThrustHz)
+    return zeroThrustHz
+motor_max_update_rate = 400 #hz
+try:
+    while True:
+        msg = s.recv(32).decode("utf-8")
+        if len(msg) > 0:
+            print(msg)
+        time.sleep(1/motor_max_update_rate)
+except KeyboardInterrupt:
+    pass

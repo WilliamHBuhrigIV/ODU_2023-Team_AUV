@@ -5,7 +5,7 @@ from pickle import FALSE
 import sys
 from winreg import KEY_CREATE_SUB_KEY
 import pygame
-#import serial
+import socket
 from pygame.locals import *
 
 def draw_Screen():
@@ -56,10 +56,9 @@ def draw_Screen():
     pygame.draw.rect(screen,[255,255,255],pygame.Rect(4*margin_size+bar_height+2*bar_width-line_size,margin_size+bar_height,bar_width+line_size,line_size))       # Bottom
     screen.blit(pygame.font.SysFont(FONT,int(bar_height/10)).render('4',False,(255,255,255)),(4*margin_size+margin_size/4+bar_height+2*bar_width,3*margin_size/2+bar_height/2))
 
-#serialconnection = serial.Serial('COM7',9600)
 pygame.init()
 pygame.display.set_caption('game base')
-STATE_CONTROLLER = "X56"
+STATE_CONTROLLER = "PS3"
 FONT = "Times New Roman"
 scale_factor = 3
 line_size = 1 #Pixels
@@ -100,9 +99,6 @@ thrust_vector = initalization_value
 #Axis 1: Left  (+) Right (-)
 #Axis 2: Front (-) Back  (+)
 PAUSE = False
-#port = serial.Serial()
-#port.port = "COM3"
-#port.baudrate = 9600
 while True:
     screen.fill((0,0,0)) #Wipes Screen
     draw_Screen()
@@ -116,11 +112,6 @@ while True:
             if event.type == KEYDOWN:
                 if event.key == K_p:
                     PAUSE = False
-    #if port.is_open == False:
-        #port.open()
-    #print(port.readline())
-    #data = serialconnection.readline().decode().strip()
-    #print(data)
     if STATE_CONTROLLER == "X56":
         NULL    
     elif STATE_CONTROLLER == "PS3":
@@ -249,5 +240,4 @@ while True:
                 motion[i] = 1
             else:
                 motion[i] = -1
-    #port.close()
     clock.tick(60)
