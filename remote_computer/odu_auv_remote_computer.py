@@ -1,11 +1,13 @@
 from ast import AsyncFunctionDef
 from asyncio.windows_events import NULL
 from cmath import isclose
+from math import trunc
 from pickle import FALSE
 import sys
 from winreg import KEY_CREATE_SUB_KEY
 import pygame
 import socket
+import time
 from pygame.locals import *
 
 def draw_Screen():
@@ -95,6 +97,12 @@ motor4 = initalization_value
 motor4_grid = pygame.Rect(4*margin_size+bar_height+2*bar_width,initalization_value,bar_width,initalization_value)
 motor4_grid_color = (initalization_value,initalization_value,initalization_value)
 thrust_vector = initalization_value
+motor_max_update_rate = 400 #hz
+s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+s.bind((socket.gethostname(),1234))
+s.listen(1)
+clientsocket, address = s.accept()
+print(f"Connection from {address} has been established!")
 #Axis 0: Up    (+) Down  (-)
 #Axis 1: Left  (+) Right (-)
 #Axis 2: Front (-) Back  (+)
@@ -187,6 +195,24 @@ while True:
     motor3 = (abs(motion[1]-1)/2)
     motor4 = ((motion[1]+1)/2)
     #print("Motor 1: ",motor1,"Motor 2: ",motor2,"Motor 3: ",motor3,"Motor 4: ",motor4)
+    motor1factor = (motion[2]*motor1+1)/2
+    motor2factor = (motion[2]*motor2+1)/2
+    motor3factor = (motion[2]*motor3+1)/2
+    motor4factor = (motion[2]*motor4+1)/2
+    #print("Motor 1: ",motor1factor,"Motor 2: ",motor2factor,"Motor 3: ",motor3factor,"Motor 4: ",motor4factor)
+    motor1data = trunc(motor1factor*1000)
+    motor2data = trunc(motor2factor*1000)
+    motor3data = trunc(motor3factor*1000)
+    motor4data = trunc(motor4factor*1000)
+    
+    clientsocket.send(bytes(str(motor1data),"utf-8"))
+    time.sleep(1/(motor_max_update_rate*4))
+    clientsocket.send(bytes(str(motor2data),"utf-8"))
+    time.sleep(1/(motor_max_update_rate*4))
+    clientsocket.send(bytes(str(motor3data),"utf-8"))
+    time.sleep(1/(motor_max_update_rate*4))
+    clientsocket.send(bytes(str(motor4data),"utf-8"))
+    time.sleep(1/(motor_max_update_rate*4))
 
     for event in pygame.event.get():
         #if event.type == JOYBUTTONDOWN:

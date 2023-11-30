@@ -42,13 +42,20 @@ motor2.start(startup_duty_cycle)
 motor3.start(startup_duty_cycle)
 motor4.start(startup_duty_cycle)
 try:
-    #motor1.ChangeDutyCycle(motor_duty_cycle)
-    #motor1.ChangeFrequency(620)
-    #time.sleep(1)
-    #motor1.ChangeFrequency(666)
     while True:
-        print('Yes?')
-        time.sleep(1/motor_max_update_rate)
+        motor1data = int(s.recv(32).decode("utf-8"))/1000*2-1
+        time.sleep(1/(motor_max_update_rate*4))
+        motor2data = int(s.recv(32).decode("utf-8"))/1000*2-1
+        time.sleep(1/(motor_max_update_rate*4))
+        motor3data = int(s.recv(32).decode("utf-8"))/1000*2-1
+        time.sleep(1/(motor_max_update_rate*4))
+        motor4data = int(s.recv(32).decode("utf-8"))/1000*2-1
+        time.sleep(1/(motor_max_update_rate*4))
+        #print("Motor 1: ",motor1data,"Motor 2: ",motor2data,"Motor 3: ",motor3data,"Motor 4: ",motor4data)
+        motor1.ChangeFrequency(dutyToPWM(motor1data))
+        motor2.ChangeFrequency(dutyToPWM(motor2data))
+        motor3.ChangeFrequency(dutyToPWM(motor3data))
+        motor4.ChangeFrequency(dutyToPWM(motor4data))
 except KeyboardInterrupt:
     pass
 motor1.stop()
