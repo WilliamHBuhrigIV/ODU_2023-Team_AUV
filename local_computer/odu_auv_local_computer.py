@@ -9,7 +9,7 @@ if ipv4=='localhost':
     s.connect((socket.gethostname(),1234))
 else:
     s.connect((ipv4,1234))
-print('Connection Established with '+ipv4+'!')
+print('Connection Established with '+str(ipv4)+'!')
 def thrustclamp(thrustvalue): #Clamps values between -1 and 1
     if thrustvalue>1:
         return 1
@@ -40,7 +40,7 @@ motor2.start(startup_duty_cycle)
 motor3.start(startup_duty_cycle)
 motor4.start(startup_duty_cycle)
 motor_statup_period = 1 #seconds
-print('Motors Initizlizing! Waiting '+motor_statup_period+'second(s)!')
+print('Motors Initizlizing! Waiting '+str(motor_statup_period)+'second(s)!')
 time.sleep(motor_statup_period)
 print('Motor Startup Completed Receiving Signals from Remote.')
 try:
