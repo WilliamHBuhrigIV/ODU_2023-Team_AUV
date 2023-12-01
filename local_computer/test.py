@@ -34,3 +34,5 @@ try:
         #print("Motor 1: ",thrustToDuty(motor1),"Motor 2: ",thrustToDuty(motor2),"Motor 3: ",thrustToDuty(motor3),"Motor 4: ",thrustToDuty(motor4))
 except KeyboardInterrupt:
     pass
+s.shutdown(socket.SHUT_RDWR)
+s.close()
