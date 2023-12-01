@@ -14,11 +14,6 @@ def thrustclamp(thrustvalue): #Clamps values between -1 and 1
     elif thrustvalue<-1:
         return -1
     return thrustvalue
-parameterA = 0.444970796979893
-parameterB = 1.15066476381101
-parameterC = -140
-parameterD = -243
-idealzeroThrustDuty = 7 #% Ideal Value
 pwmFrequency = 50.75 #hz
 def thrustToDuty(thrustvalue): 
     thrustvalue=(thrustclamp(thrustvalue)+1)/2
