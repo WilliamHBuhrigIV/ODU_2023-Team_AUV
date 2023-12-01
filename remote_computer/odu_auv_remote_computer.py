@@ -58,6 +58,11 @@ def draw_Screen():
     pygame.draw.rect(screen,[255,255,255],pygame.Rect(4*margin_size+bar_height+2*bar_width-line_size,margin_size+bar_height,bar_width+line_size,line_size))       # Bottom
     screen.blit(pygame.font.SysFont(FONT,int(bar_height/10)).render('4',False,(255,255,255)),(4*margin_size+margin_size/4+bar_height+2*bar_width,3*margin_size/2+bar_height/2))
 
+s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+s.bind((socket.gethostname(),1234))
+s.listen(1)
+clientsocket, address = s.accept()
+print(f"Connection from {address} has been established!")
 pygame.init()
 pygame.display.set_caption('game base')
 STATE_CONTROLLER = "PS3"
@@ -97,12 +102,8 @@ motor4 = initalization_value
 motor4_grid = pygame.Rect(4*margin_size+bar_height+2*bar_width,initalization_value,bar_width,initalization_value)
 motor4_grid_color = (initalization_value,initalization_value,initalization_value)
 thrust_vector = initalization_value
-motor_max_update_rate = 400 #hz
-s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-s.bind((socket.gethostname(),1234))
-s.listen(1)
-clientsocket, address = s.accept()
-print(f"Connection from {address} has been established!")
+motor_max_update_rate = 16 #hz
+
 #Axis 0: Up    (+) Down  (-)
 #Axis 1: Left  (+) Right (-)
 #Axis 2: Front (-) Back  (+)
@@ -252,6 +253,7 @@ while True:
             if event.key == K_ESCAPE:
                 pygame.quit()
                 sys.exit()
+                socket.close()
 
     for i in range(len(motion)):
         if abs(motion[i]) < dead_zone:
