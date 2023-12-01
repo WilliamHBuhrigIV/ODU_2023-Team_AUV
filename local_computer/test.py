@@ -18,17 +18,12 @@ parameterA = 0.444970796979893
 parameterB = 1.15066476381101
 parameterC = -140
 parameterD = -243
-idealzeroThrustHz = 666 #hz Ideal Value
-def pwmShift(expectedPWMValue): #Provides Adjusted Value from Theoretical
-    return parameterA*math.pow(expectedPWMValue,parameterB)
-zeroThrustHz=pwmShift(idealzeroThrustHz)
-def dutyToPWM(thrustvalue): 
-    thrustvalue=thrustclamp(thrustvalue)
-    if thrustvalue>0:
-        return pwmShift(parameterC*thrustvalue+idealzeroThrustHz)
-    elif thrustvalue<-0:
-        return pwmShift(parameterD*thrustvalue+idealzeroThrustHz)
-    return zeroThrustHz
+idealzeroThrustDuty = 7 #% Ideal Value
+pwmFrequency = 50.75 #hz
+def thrustToDuty(thrustvalue): 
+    thrustvalue=(thrustclamp(thrustvalue)+1)/2
+    return thrustvalue*5+5
+    
 max_transmission_frequency = 1000 #hz
 try:
     while True:
@@ -40,6 +35,7 @@ try:
         time.sleep(1/(max_transmission_frequency*4))
         motor4 = int(s.recv(32).decode("utf-8"))/1000*2-1
         time.sleep(1/(max_transmission_frequency*4))
-        print("Motor 1: ",motor1,"Motor 2: ",motor2,"Motor 3: ",motor3,"Motor 4: ",motor4)
+        #print("Motor 1: ",motor1,"Motor 2: ",motor2,"Motor 3: ",motor3,"Motor 4: ",motor4)
+        #print("Motor 1: ",thrustToDuty(motor1),"Motor 2: ",thrustToDuty(motor2),"Motor 3: ",thrustToDuty(motor3),"Motor 4: ",thrustToDuty(motor4))
 except KeyboardInterrupt:
     pass
