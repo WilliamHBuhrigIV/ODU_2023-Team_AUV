@@ -3,8 +3,12 @@ import math
 import socket
 import RPi.GPIO as GPIO
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+ipv4_default = '192.168.123.221'
 ipv4 = input('What what is the IPv4 Address of the Local Host: ')
+if len(ipv4)<19:
+    ipv4=ipv4_default
 s.connect((ipv4,1234))
+print('Connection Established with {ipv4} host!')
 def thrustclamp(thrustvalue): #Clamps values between -1 and 1
     if thrustvalue>1:
         return 1
@@ -31,8 +35,8 @@ motor1_gpio = 11             #pin
 motor2_gpio = 13             #pin
 motor3_gpio = 15             #pin
 motor4_gpio = 16             #pin
-startup_duty_cycle = 50      #%
-motor_max_update_rate = 400 #hz
+startup_duty_cycle = 75      #%
+motor_max_update_rate = 16 #hz
 GPIO.setup(motor1_gpio, GPIO.OUT)
 GPIO.setup(motor2_gpio, GPIO.OUT)
 GPIO.setup(motor3_gpio, GPIO.OUT)
@@ -47,6 +51,7 @@ motor3.start(startup_duty_cycle)
 motor4.start(startup_duty_cycle)
 try:
     while True:
+        #s.send(bytes(str('1'),'utf-8'))
         motor1data = int(s.recv(32).decode("utf-8"))/1000*2-1
         time.sleep(1/(motor_max_update_rate*4))
         motor2data = int(s.recv(32).decode("utf-8"))/1000*2-1
@@ -67,3 +72,4 @@ motor2.stop()
 motor3.stop()
 motor4.stop()
 GPIO.cleanup()
+socket.close()
