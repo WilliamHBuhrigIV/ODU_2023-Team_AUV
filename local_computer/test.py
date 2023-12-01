@@ -2,8 +2,12 @@ import time
 import math
 import socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+ipv4_default = '10.161.80.254'
 ipv4 = input('What what is the IPv4 Address of the Local Host: ')
-s.connect((ipv4,1234))
+if ipv4=='localhost':
+    s.connect((socket.gethostname(),1234))
+else:
+    s.connect((ipv4,1234))
 def thrustclamp(thrustvalue): #Clamps values between -1 and 1
     if thrustvalue>1:
         return 1
