@@ -102,7 +102,7 @@ motor4 = initalization_value
 motor4_grid = pygame.Rect(4*margin_size+bar_height+2*bar_width,initalization_value,bar_width,initalization_value)
 motor4_grid_color = (initalization_value,initalization_value,initalization_value)
 thrust_vector = initalization_value
-motor_max_update_rate = 16 #hz
+motor_max_update_rate = 400 #hz
 
 #Axis 0: Up    (+) Down  (-)
 #Axis 1: Left  (+) Right (-)
@@ -206,14 +206,16 @@ while True:
     motor3data = trunc(motor3factor*1000)
     motor4data = trunc(motor4factor*1000)
     
+    max_transmission_frequency = 1000 #hz
     clientsocket.send(bytes(str(motor1data),"utf-8"))
-    time.sleep(1/(motor_max_update_rate*4))
+    time.sleep(1/(max_transmission_frequency*4))
     clientsocket.send(bytes(str(motor2data),"utf-8"))
-    time.sleep(1/(motor_max_update_rate*4))
+    time.sleep(1/(max_transmission_frequency*4))
     clientsocket.send(bytes(str(motor3data),"utf-8"))
-    time.sleep(1/(motor_max_update_rate*4))
+    time.sleep(1/(max_transmission_frequency*4))
     clientsocket.send(bytes(str(motor4data),"utf-8"))
-    time.sleep(1/(motor_max_update_rate*4))
+    time.sleep(1/(max_transmission_frequency*4))
+    time.sleep(1/motor_max_update_rate)
 
     for event in pygame.event.get():
         #if event.type == JOYBUTTONDOWN:

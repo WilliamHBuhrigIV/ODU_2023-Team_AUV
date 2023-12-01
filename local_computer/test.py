@@ -29,18 +29,17 @@ def dutyToPWM(thrustvalue):
     elif thrustvalue<-0:
         return pwmShift(parameterD*thrustvalue+idealzeroThrustHz)
     return zeroThrustHz
-motor_max_update_rate = 400 #hz
+max_transmission_frequency = 1000 #hz
 try:
     while True:
         motor1 = int(s.recv(32).decode("utf-8"))/1000*2-1
-        time.sleep(1/(motor_max_update_rate*4))
+        time.sleep(1/(max_transmission_frequency*4))
         motor2 = int(s.recv(32).decode("utf-8"))/1000*2-1
-        time.sleep(1/(motor_max_update_rate*4))
+        time.sleep(1/(max_transmission_frequency*4))
         motor3 = int(s.recv(32).decode("utf-8"))/1000*2-1
-        time.sleep(1/(motor_max_update_rate*4))
+        time.sleep(1/(max_transmission_frequency*4))
         motor4 = int(s.recv(32).decode("utf-8"))/1000*2-1
-        time.sleep(1/(motor_max_update_rate*4))
+        time.sleep(1/(max_transmission_frequency*4))
         print("Motor 1: ",motor1,"Motor 2: ",motor2,"Motor 3: ",motor3,"Motor 4: ",motor4)
-        
 except KeyboardInterrupt:
     pass
