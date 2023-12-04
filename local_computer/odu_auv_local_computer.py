@@ -74,10 +74,10 @@ try:
         thrust2 = thrustclamp((motor2-500)/1000)
         thrust1 = thrustclamp((motor1-500)/1000)
         print("Motor 1: ",thrust1,"Motor 2: ",thrust2,"Motor 3: ",thrust3,"Motor 4: ",thrust4)
-        motor1.ChangeDutyCycle(thrustToDuty(thrust1))
-        motor2.ChangeDutyCycle(thrustToDuty(thrust2))
-        motor3.ChangeDutyCycle(thrustToDuty(thrust3))
-        motor4.ChangeDutyCycle(thrustToDuty(thrust4))
+        #motor1.ChangeDutyCycle(thrustToDuty(thrust1))
+        #motor2.ChangeDutyCycle(thrustToDuty(thrust2))
+        #motor3.ChangeDutyCycle(thrustToDuty(thrust3))
+        #motor4.ChangeDutyCycle(thrustToDuty(thrust4))
         time.sleep(1/(max_transmission_frequency))
 except KeyboardInterrupt:
     pass
