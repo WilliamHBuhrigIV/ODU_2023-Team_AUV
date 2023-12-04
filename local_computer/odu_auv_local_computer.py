@@ -19,13 +19,13 @@ def thrustclamp(thrustvalue): #Clamps values between -1 and 1
 pwmFrequency = 50.75 #hz
 def thrustToDuty(thrustvalue): 
     thrustvalue=(thrustclamp(thrustvalue)+1)/2
-    return thrustvalue*5+5
+    return thrustvalue*5+4.5
 GPIO.setmode(GPIO.BOARD)
 motor1_gpio = 11             #pin
 motor2_gpio = 13             #pin
 motor3_gpio = 15             #pin
 motor4_gpio = 16             #pin
-startup_duty_cycle = 7.5      #%
+startup_duty_cycle = 7      #%
 #motor_max_update_rate = 16 #hz
 GPIO.setup(motor1_gpio, GPIO.OUT)
 GPIO.setup(motor2_gpio, GPIO.OUT)
