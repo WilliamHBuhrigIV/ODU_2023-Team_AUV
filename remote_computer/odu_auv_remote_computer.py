@@ -213,28 +213,28 @@ while True:
     motor2factor = (motion[2]*motor2+1)/2
     motor3factor = (motion[2]*motor3+1)/2
     motor4factor = (motion[2]*motor4+1)/2
-    #print("Motor 1: ",motor1factor,"Motor 2: ",motor2factor,"Motor 3: ",motor3factor,"Motor 4: ",motor4factor)
+    ##print("Motor 1: ",motor1factor,"Motor 2: ",motor2factor,"Motor 3: ",motor3factor,"Motor 4: ",motor4factor)
     motor1data = trunc(motor1factor*1000)
     motor2data = trunc(motor2factor*1000)
     motor3data = trunc(motor3factor*1000)
     motor4data = trunc(motor4factor*1000)
 
-    motordata = digitToString(motor1data)+digitToString(motor2data)+digitToString(motor3data)+digitToString(motor4data)
+    #motordata = digitToString(motor1data)+digitToString(motor2data)+digitToString(motor3data)+digitToString(motor4data)
     
     max_transmission_frequency = 25 #hz
-    #clientsocket.send(bytes(str(motor1data),"utf-8"))
-    #time.sleep(1/(max_transmission_frequency*4))
-    #clientsocket.send(bytes(str(motor2data),"utf-8"))
-    #time.sleep(1/(max_transmission_frequency*4))
-    #clientsocket.send(bytes(str(motor3data),"utf-8"))
-    #time.sleep(1/(max_transmission_frequency*4))
-    #clientsocket.send(bytes(str(motor4data),"utf-8"))
-    #time.sleep(1/(max_transmission_frequency*4))
-    #time.sleep(1/motor_max_update_rate)
+    clientsocket.send(bytes(str(motor1data),"utf-8"))
+    time.sleep(1/(max_transmission_frequency*4))
+    clientsocket.send(bytes(str(motor2data),"utf-8"))
+    time.sleep(1/(max_transmission_frequency*4))
+    clientsocket.send(bytes(str(motor3data),"utf-8"))
+    time.sleep(1/(max_transmission_frequency*4))
+    clientsocket.send(bytes(str(motor4data),"utf-8"))
+    time.sleep(1/(max_transmission_frequency*4))
+    time.sleep(1/motor_max_update_rate)
 
 
-    clientsocket.send(bytes(motordata,"utf-8"))
-    time.sleep(1/(max_transmission_frequency))
+    #clientsocket.send(bytes(motordata,"utf-8"))
+    #time.sleep(1/(max_transmission_frequency))
     #time.sleep(1/motor_max_update_rate)
 
     for event in pygame.event.get():
