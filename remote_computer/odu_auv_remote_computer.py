@@ -4,11 +4,22 @@ from cmath import isclose
 from math import trunc
 from pickle import FALSE
 import sys
+from unicodedata import digit
 from winreg import KEY_CREATE_SUB_KEY
 import pygame
 import socket
 import time
 from pygame.locals import *
+
+def digitToString(number):
+    if number < 10:
+        return('  '+str(number))
+    elif number < 100:
+        return(' '+str(number))
+    elif number < 1000:
+        return(str(number))
+    else:
+        return '000'
 
 def draw_Screen():
     # Control Display
@@ -205,17 +216,24 @@ while True:
     motor2data = trunc(motor2factor*1000)
     motor3data = trunc(motor3factor*1000)
     motor4data = trunc(motor4factor*1000)
+
+    motordata = digitToString(motor1data)+digitToString(motor2data)+digitToString(motor3data)+digitToString(motor4data)
     
     max_transmission_frequency = 25 #hz
-    clientsocket.send(bytes(str(motor1data),"utf-8"))
-    time.sleep(1/(max_transmission_frequency*4))
-    clientsocket.send(bytes(str(motor2data),"utf-8"))
-    time.sleep(1/(max_transmission_frequency*4))
-    clientsocket.send(bytes(str(motor3data),"utf-8"))
-    time.sleep(1/(max_transmission_frequency*4))
-    clientsocket.send(bytes(str(motor4data),"utf-8"))
-    time.sleep(1/(max_transmission_frequency*4))
-    time.sleep(1/motor_max_update_rate)
+    #clientsocket.send(bytes(str(motor1data),"utf-8"))
+    #time.sleep(1/(max_transmission_frequency*4))
+    #clientsocket.send(bytes(str(motor2data),"utf-8"))
+    #time.sleep(1/(max_transmission_frequency*4))
+    #clientsocket.send(bytes(str(motor3data),"utf-8"))
+    #time.sleep(1/(max_transmission_frequency*4))
+    #clientsocket.send(bytes(str(motor4data),"utf-8"))
+    #time.sleep(1/(max_transmission_frequency*4))
+    #time.sleep(1/motor_max_update_rate)
+
+
+    clientsocket.send(bytes(motordata,"utf-8"))
+    time.sleep(1/(max_transmission_frequency))
+    #time.sleep(1/motor_max_update_rate)
 
     for event in pygame.event.get():
         #if event.type == JOYBUTTONDOWN:

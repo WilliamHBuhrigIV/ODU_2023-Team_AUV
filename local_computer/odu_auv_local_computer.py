@@ -26,7 +26,7 @@ motor2_gpio = 13             #pin
 motor3_gpio = 15             #pin
 motor4_gpio = 16             #pin
 startup_duty_cycle = 7.5      #%
-motor_max_update_rate = 16 #hz
+#motor_max_update_rate = 16 #hz
 GPIO.setup(motor1_gpio, GPIO.OUT)
 GPIO.setup(motor2_gpio, GPIO.OUT)
 GPIO.setup(motor3_gpio, GPIO.OUT)
@@ -39,26 +39,46 @@ motor1.start(startup_duty_cycle)
 motor2.start(startup_duty_cycle)
 motor3.start(startup_duty_cycle)
 motor4.start(startup_duty_cycle)
-motor_statup_period = 1 #seconds
+motor_statup_period = 2 #seconds
 print('Motors Initizlizing! Waiting '+str(motor_statup_period)+'second(s)!')
 time.sleep(motor_statup_period)
 print('Motor Startup Completed Receiving Signals from Remote.')
+max_transmission_frequency = 25
 try:
     while True:
         #s.send(bytes(str('1'),'utf-8'))
-        motor1data = int(s.recv(32).decode("utf-8"))/1000*2-1
-        time.sleep(1/(motor_max_update_rate*4))
-        motor2data = int(s.recv(32).decode("utf-8"))/1000*2-1
-        time.sleep(1/(motor_max_update_rate*4))
-        motor3data = int(s.recv(32).decode("utf-8"))/1000*2-1
-        time.sleep(1/(motor_max_update_rate*4))
-        motor4data = int(s.recv(32).decode("utf-8"))/1000*2-1
-        time.sleep(1/(motor_max_update_rate*4))
-        #print("Motor 1: ",motor1data,"Motor 2: ",motor2data,"Motor 3: ",motor3data,"Motor 4: ",motor4data)
-        motor1.ChangeDutyCycle(thrustToDuty(motor1data))
-        motor2.ChangeDutyCycle(thrustToDuty(motor2data))
-        motor3.ChangeDutyCycle(thrustToDuty(motor3data))
-        motor4.ChangeDutyCycle(thrustToDuty(motor4data))
+        #motor1data = int(s.recv(32).decode("utf-8"))/1000*2-1
+        #time.sleep(1/(motor_max_update_rate*4))
+        #motor2data = int(s.recv(32).decode("utf-8"))/1000*2-1
+        #time.sleep(1/(motor_max_update_rate*4))
+        #motor3data = int(s.recv(32).decode("utf-8"))/1000*2-1
+        #time.sleep(1/(motor_max_update_rate*4))
+        #motor4data = int(s.recv(32).decode("utf-8"))/1000*2-1
+        #time.sleep(1/(motor_max_update_rate*4))
+        ##print("Motor 1: ",motor1data,"Motor 2: ",motor2data,"Motor 3: ",motor3data,"Motor 4: ",motor4data)
+        #motor1.ChangeDutyCycle(thrustToDuty(motor1data))
+        #motor2.ChangeDutyCycle(thrustToDuty(motor2data))
+        #motor3.ChangeDutyCycle(thrustToDuty(motor3data))
+        #motor4.ChangeDutyCycle(thrustToDuty(motor4data))
+        rawmotordata = s.recv(32).decode("utf-8")
+        print(rawmotordata)
+        motordata = int(rawmotordata)
+        print(motordata)
+        motor4 = int(motordata % 1000)
+        motor3 = int((motordata % 1000000 - motor4)/1000)
+        motor2 = int((motordata % 1000000000 - (motor3+motor4))/1000000)
+        motor1 = int((motordata % 1000000000000 - (motor4+motor2+motor3))/1000000000)
+        #print("Motor 1: ",motor1,"Motor 2: ",motor2,"Motor 3: ",motor3,"Motor 4: ",motor4)
+        thrust4 = thrustclamp((motor4-500)/1000)
+        thrust3 = thrustclamp((motor3-500)/1000)
+        thrust2 = thrustclamp((motor2-500)/1000)
+        thrust1 = thrustclamp((motor1-500)/1000)
+        #print("Motor 1: ",thrust1,"Motor 2: ",thrust2,"Motor 3: ",thrust3,"Motor 4: ",thrust4)
+        motor1.ChangeDutyCycle(thrustToDuty(thrust1))
+        motor2.ChangeDutyCycle(thrustToDuty(thrust2))
+        motor3.ChangeDutyCycle(thrustToDuty(thrust3))
+        motor4.ChangeDutyCycle(thrustToDuty(thrust4))
+        time.sleep(1/(max_transmission_frequency))
 except KeyboardInterrupt:
     pass
 motor1.stop()
