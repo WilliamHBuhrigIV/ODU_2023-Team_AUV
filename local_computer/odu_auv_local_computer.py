@@ -44,6 +44,7 @@ print('Motors Initizlizing! Waiting '+str(motor_statup_period)+'second(s)!')
 time.sleep(motor_statup_period)
 print('Motor Startup Completed Receiving Signals from Remote.')
 max_transmission_frequency = 25
+motor_max_update_rate = 400
 try:
     while True:
         s.send(bytes(str('1'),'utf-8'))
