@@ -76,7 +76,7 @@ clientsocket, address = s.accept()
 print(f"Connection from {address} has been established!")
 pygame.init()
 pygame.display.set_caption('game base')
-STATE_CONTROLLER = "PS3"
+STATE_CONTROLLER = "XBOX"
 FONT = "Times New Roman"
 scale_factor = 3
 line_size = 1 #Pixels
@@ -114,7 +114,7 @@ motor4_grid = pygame.Rect(4*margin_size+bar_height+2*bar_width,initalization_val
 motor4_grid_color = (initalization_value,initalization_value,initalization_value)
 thrust_vector = initalization_value
 motor_max_update_rate = 50 #hz
-
+time.sleep(2)
 #Axis 0: Up    (+) Down  (-)
 #Axis 1: Left  (+) Right (-)
 #Axis 2: Front (-) Back  (+)
@@ -135,6 +135,8 @@ while True:
     if STATE_CONTROLLER == "X56":
         NULL    
     elif STATE_CONTROLLER == "PS3":
+        motion[2] = motion[4]-motion[3]
+    elif STATE_CONTROLLER == "XBOX":
         motion[2] = motion[4]-motion[3]
 
     x_y_grid.x = motion[0]*(bar_height-cursor_size)/2+(margin_size+bar_height/2)-cursor_size/2
@@ -206,7 +208,7 @@ while True:
     motor2 = (abs(motion[0]-1)/2)
     motor3 = (abs(motion[1]-1)/2)
     motor4 = ((motion[1]+1)/2)
-    #print("Motor 1: ",motor1,"Motor 2: ",motor2,"Motor 3: ",motor3,"Motor 4: ",motor4)
+    print("Motor 1: ",motor1,"Motor 2: ",motor2,"Motor 3: ",motor3,"Motor 4: ",motor4)
     motor1factor = (motion[2]*motor1+1)/2
     motor2factor = (motion[2]*motor2+1)/2
     motor3factor = (motion[2]*motor3+1)/2
@@ -257,6 +259,17 @@ while True:
                     motion[3] = (event.value+1)/2
                 if event.axis == 5: #Right Bumper
                     motion[4] = (event.value+1)/2
+            elif STATE_CONTROLLER == "XBOX":
+                #if event.axis == 0: #LEFT/RIGHT Left Stick
+                #if event.axis == 1: #UP/DOWN Left Stick
+                if event.axis == 2: #LEFT/RIGHT Right Stick
+                    motion[0] = event.value
+                if event.axis == 3: #UP/DOWN Right Stick
+                    motion[1] = event.value
+                if event.axis == 4: #Left Bumper
+                    motion[3] = (event.value+1)/2
+                if event.axis == 5: #Right Bumper
+                    motion[4] = (event.value+1)/2
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
@@ -266,6 +279,9 @@ while True:
                     STATE_CONTROLLER == "PS3"
                     print("Switching to Controller")
                 elif STATE_CONTROLLER == "PS3":
+                    STATE_CONTROLLER == "XBOX"
+                    print("Switching to Joystick")
+                elif STATE_CONTROLLER == "XBOX":
                     STATE_CONTROLLER == "X56"
                     print("Switching to Joystick")
             if event.key == K_p:
